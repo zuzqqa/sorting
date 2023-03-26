@@ -1,0 +1,78 @@
+// mergesort.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include <iostream>
+
+using namespace std;
+
+void merge(int arr[], int L[], int R[], int mid, int r) {
+	int i = 0, j = 0, k = 0;
+
+	while (i < mid && j < r) {
+		if (L[i] < R[j]) {
+			arr[k] = L[i];
+			i++;
+		}
+		else {
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+	
+	while (i < mid) {
+		arr[k] = L[i];
+		i++;
+		k++;
+	}	
+
+	while (i < r){
+		arr[k] = R[i];
+		i++;
+		k++;
+	}
+}
+
+void mergeSort(int arr[], int size) {
+	if (size < 2) {
+		return;
+	}
+
+	int mid = size / 2;
+
+	int* L = new int[mid];
+	int* R = new int[size - mid];
+
+	for (int i = 0; i < mid; i++) {
+		L[i] = arr[i];
+	}
+	for (int i = mid; i < size; i++) {
+		R[i - mid] = arr[i];
+	}
+
+	mergeSort(L, mid);
+	mergeSort(R, size - mid);
+
+	merge(arr, L, R, mid, size - mid);
+}
+
+int main()
+{
+	int n,a;
+	cin >> n;
+	int* arr = new int[n];
+
+	for (int i = 0; i < n; i++) {
+		cin >> a;
+		arr[i] = a;
+	}
+
+	mergeSort(arr, n);
+	
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
+	}
+
+	delete[] arr;
+}
+
