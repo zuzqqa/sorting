@@ -1,0 +1,93 @@
+// mergesort.cpp : This file contains the 'main' function. Program execution begins and ends there.
+//
+
+#include <iostream>
+#include <string>
+
+using namespace std;
+
+bool compare(string a, string b) {
+	if (a.size() > b.size()) return true;
+	else if (a.size() < b.size()) return false;
+	else {
+		for (int i = 0; i < a.size(); i++) {
+			if (a[i] > b[i]) return true;
+		}
+	}
+	return false;
+}
+
+
+void merge(string* arr, string* L, string* R, int mid, int r) {
+	int i = 0, j = 0, k = 0;
+
+	while (i < mid && j < r) {
+		if (compare(R[j], L[i])) {
+			arr[k] = L[i];
+			i++;
+		}
+		else {
+			arr[k] = R[j];
+			j++;
+		}
+		k++;
+	}
+
+	while (i < mid) {
+		arr[k] = L[i];
+		i++;
+		k++;
+	}
+
+	while (i < r) {
+		arr[k] = R[i];
+		i++;
+		k++;
+	}
+}
+
+void mergeSort(string* arr, int size) {
+	if (size < 2) {
+		return;
+	}
+
+	int mid = size / 2;
+
+	string* L = new string[mid];
+	string* R = new string[size - mid];
+
+	for (int i = 0; i < mid; i++) {
+		L[i] = arr[i];
+	}
+	for (int i = mid; i < size; i++) {
+		R[i - mid] = arr[i];
+	}
+
+	mergeSort(L, mid);
+	mergeSort(R, size - mid);
+
+	merge(arr, L, R, mid, size - mid);
+
+	delete[] L;
+	delete[] R;
+}
+
+int main()
+{
+	int n;  string a;
+	cin >> n;
+	string* arr = new string[n];
+
+	for (int i = 0; i < n; i++) {
+		cin >> a;
+		arr[i] = a;
+	}
+
+	mergeSort(arr, n);
+
+	for (int i = 0; i < n; i++) {
+		cout << arr[i] << " ";
+	}
+
+	delete[] arr;
+}
